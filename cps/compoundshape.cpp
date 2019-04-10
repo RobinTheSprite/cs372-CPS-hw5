@@ -152,7 +152,22 @@ std::stringstream HorizontalShapes::generate()
 	return postScriptFragment;
 }
 
-VerticalShapes::VerticalShapes(vector<Shape_ptr> shapes)
+    std::string HorizontalShapes::moveToNextShape(Shape & shape, double & relativeCurrentPoint)
+    {
+        stringstream postScriptFragment;
+        relativeCurrentPoint += shape.get_width()/2;
+        postScriptFragment << std::to_string(shape.get_width()/2) << " " << "0 translate\n";
+        return postScriptFragment.str();
+    }
+
+    std::string HorizontalShapes::moveBackToOrigin(double & relativeCurrentPoint)
+    {
+        stringstream postScriptFragment;
+        postScriptFragment << to_string(-relativeCurrentPoint) << " 0 translate\n";
+        return postScriptFragment.str();
+    }
+
+    VerticalShapes::VerticalShapes(vector<Shape_ptr> shapes)
 	: CompoundShape(move(shapes))
 {}
 
