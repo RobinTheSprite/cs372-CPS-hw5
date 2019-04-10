@@ -216,7 +216,15 @@ stringstream VerticalShapes::generate()
 	return postScriptFragment;
 }
 
-Scaled::Scaled(Shape &shape, pair<double, double> scaleFactor)
+    std::string VerticalShapes::moveToNextShape(Shape & shape, double & relativeCurrentPoint)
+    {
+        stringstream postScriptFragment;
+        relativeCurrentPoint += shape.get_height()/2;
+        postScriptFragment << 0 << " " << to_string(shape.get_height()/2) << " translate\n";
+        return postScriptFragment.str();
+    }
+
+    Scaled::Scaled(Shape &shape, pair<double, double> scaleFactor)
     : _originalShape(&shape), _scaleFactor(move(scaleFactor))
 {}
 
