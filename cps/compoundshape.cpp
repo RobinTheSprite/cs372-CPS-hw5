@@ -103,7 +103,17 @@ stringstream LayeredShapes::generate()
 	return postScriptFragment;
 }
 
-HorizontalShapes::HorizontalShapes(std::vector<Shape_ptr> shapes)
+    std::string LayeredShapes::moveToNextShape(Shape &, double &)
+    {
+        return std::string("");
+    }
+
+    std::string LayeredShapes::moveBackToOrigin(double &)
+    {
+        return std::string("");
+    }
+
+    HorizontalShapes::HorizontalShapes(std::vector<Shape_ptr> shapes)
 	: CompoundShape(move(shapes))
 {}
 

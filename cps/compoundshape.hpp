@@ -45,6 +45,9 @@ public:
 	double get_height() const override;
 	double get_width() const override;
 
+    std::string moveToNextShape(Shape &, double &) override;
+    std::string moveBackToOrigin(double &) override;
+
 	std::stringstream generate() override;
 private:
 };
