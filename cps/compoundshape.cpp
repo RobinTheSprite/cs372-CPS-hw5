@@ -42,7 +42,30 @@ CompoundShape::const_iterator CompoundShape::end() const
 	return _shapes.end();
 }
 
-LayeredShapes::LayeredShapes(std::vector<Shape_ptr> shapes)
+std::stringstream CompoundShape::generate()
+{
+    stringstream postScriptFragment;
+    auto relativeCurrentPoint{0.0};
+    for (auto shape = begin(); shape != end(); ++shape)
+    {
+        if (shape != begin())
+        {
+           postScriptFragment << moveToNextShape(**shape, relativeCurrentPoint);
+        }
+        postScriptFragment << (*shape)->generate().str();
+        if (shape + 1 != end())
+        {
+            moveToNextShape(**shape, relativeCurrentPoint);
+        }
+    }
+    if (get_numShapes() > 1)
+    {
+       postScriptFragment << moveBackToOrigin(relativeCurrentPoint);
+    }
+    return postScriptFragment;
+}
+
+    LayeredShapes::LayeredShapes(std::vector<Shape_ptr> shapes)
 	: CompoundShape(move(shapes))
 {}
 

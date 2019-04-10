@@ -23,6 +23,11 @@ public:
 	void set_width(double) override {}
 	void set_height(double) override {}
 
+	std::stringstream generate() override;
+
+    virtual std::string moveToNextShape(Shape &, double &) = 0;
+    virtual std::string moveBackToOrigin(double &) = 0;
+
 	void pushShape(Shape_ptr shape);
 	size_t get_numShapes() const;
 	iterator begin();
