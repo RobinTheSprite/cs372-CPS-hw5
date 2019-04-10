@@ -48,7 +48,6 @@ public:
     std::string moveToNextShape(Shape &, double &) override;
     std::string moveBackToOrigin(double &) override;
 
-	std::stringstream generate() override;
 private:
 };
 
@@ -62,7 +61,6 @@ public:
     std::string moveToNextShape(Shape &, double &) override;
     std::string moveBackToOrigin(double &) override;
 
-	std::stringstream generate() override;
 private:
 
 };
@@ -77,7 +75,6 @@ public:
     std::string moveToNextShape(Shape &, double &) override;
     std::string moveBackToOrigin(double &) override;
 
-	std::stringstream generate() override;
 private:
 
 };

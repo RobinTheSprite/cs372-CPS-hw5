@@ -392,6 +392,7 @@ TEST_CASE("Rotated Shapes")
         REQUIRE(rot3.generate().str() == "gsave\n"
                                          "270 rotate\n"
                                          "0 0 10.000000 0 360 arc stroke\n"
+                                         "\n"
                                          "10.000000 0 translate\n"
                                          "40.000000 0 translate\n"
                                          "newpath\n"
@@ -402,6 +403,7 @@ TEST_CASE("Rotated Shapes")
                                          "closepath\n"
                                          "0 0 moveto\n"
                                          "stroke\n"
+                                         "\n"
                                          "-50.000000 0 translate\n"
                                          "grestore\n");
     }
