@@ -50,7 +50,7 @@ std::stringstream CompoundShape::generate()
     {
         if (shape != begin())
         {
-           postScriptFragment << moveToNextShape(**shape, relativeCurrentPoint);
+           postScriptFragment << moveToNextShape(**shape, relativeCurrentPoint) << std::endl;
         }
         postScriptFragment << (*shape)->generate().str() << std::endl;
         if (shape + 1 != end())

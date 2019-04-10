@@ -171,7 +171,7 @@ TEST_CASE("Layered Shape")
             make_unique<Circle>(10)->generate().str() + "\n"
         );
 		REQUIRE(layered3->generate().str() ==
-            make_unique<Circle>(10)->generate().str() + "\n"
+            make_unique<Circle>(10)->generate().str()
             + make_unique<Rectangle>(10, 25)->generate().str() + "\n"
         );
     }
