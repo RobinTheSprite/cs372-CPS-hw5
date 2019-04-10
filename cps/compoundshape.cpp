@@ -224,6 +224,13 @@ stringstream VerticalShapes::generate()
         return postScriptFragment.str();
     }
 
+    std::string VerticalShapes::moveBackToOrigin(double & relativeCurrentPoint)
+    {
+        stringstream postScriptFragment;
+        postScriptFragment << "0 " << to_string(-relativeCurrentPoint) << " translate\n";
+        return postScriptFragment.str();
+    }
+
     Scaled::Scaled(Shape &shape, pair<double, double> scaleFactor)
     : _originalShape(&shape), _scaleFactor(move(scaleFactor))
 {}
