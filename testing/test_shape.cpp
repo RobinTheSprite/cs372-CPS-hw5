@@ -171,7 +171,7 @@ TEST_CASE("Layered Shape")
             make_unique<Circle>(10)->generate().str() + "\n"
         );
 		REQUIRE(layered3->generate().str() ==
-            make_unique<Circle>(10)->generate().str()
+            make_unique<Circle>(10)->generate().str() + "\n"
             + make_unique<Rectangle>(10, 25)->generate().str() + "\n"
         );
     }
@@ -206,12 +206,16 @@ TEST_CASE("Horizontal Shape")
 		REQUIRE(horizontal1->generate().str() == "");
 		REQUIRE(horizontal2->generate().str() ==
             make_unique<Circle>(10)->generate().str()
+            + "\n"
         );
 		REQUIRE(horizontal3->generate().str() ==
             make_unique<Circle>(10)->generate().str()
+            + "\n"
             + "10.000000 0 translate\n"
             + "10.000000 0 translate\n"
+            + "\n"
             + make_unique<Circle>(10)->generate().str()
+            + "\n"
             + "-20.000000 0 translate\n"
         );
 	}
@@ -246,12 +250,16 @@ TEST_CASE("Vertical Shape")
 		REQUIRE(vertical1->generate().str() == "");
 		REQUIRE(vertical2->generate().str() ==
             make_unique<Circle>(10)->generate().str()
+            + "\n"
         );
 		REQUIRE(vertical3->generate().str() ==
             make_unique<Circle>(10)->generate().str()
+            + "\n"
             + "0 10.000000 translate\n"
             + "0 10.000000 translate\n"
+            + "\n"
             + make_unique<Circle>(10)->generate().str()
+            + "\n"
             + "0 -20.000000 translate\n"
         );
 	}
@@ -395,6 +403,7 @@ TEST_CASE("Rotated Shapes")
                                          "\n"
                                          "10.000000 0 translate\n"
                                          "40.000000 0 translate\n"
+                                         "\n"
                                          "newpath\n"
                                          "-40.000000 -20.000000 moveto\n"
                                          "80.000000 0 rlineto\n"

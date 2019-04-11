@@ -47,28 +47,33 @@ namespace cps
         return _shapes.end();
     }
 
-std::stringstream CompoundShape::generate()
-{
-    stringstream postScriptFragment;
-    auto relativeCurrentPoint{0.0};
-    for (auto shape = begin(); shape != end(); ++shape)
+    std::stringstream CompoundShape::generate()
     {
-        if (shape != begin())
+        stringstream postScriptFragment;
+        auto relativeCurrentPoint{0.0};
+        for (auto shape = begin(); shape != end(); ++shape)
         {
-           postScriptFragment << moveToNextShape(**shape, relativeCurrentPoint) << std::endl;
+            if (shape != begin())
+            {
+                std::string amountToMove = moveToNextShape(**shape, relativeCurrentPoint);
+                postScriptFragment << amountToMove;
+                if (!amountToMove.empty())
+                {
+                    postScriptFragment << std::endl;
+                }
+            }
+            postScriptFragment << (*shape)->generate().str() << std::endl;
+            if (shape + 1 != end())
+            {
+                postScriptFragment << moveToNextShape(**shape, relativeCurrentPoint);
+            }
         }
-        postScriptFragment << (*shape)->generate().str() << std::endl;
-        if (shape + 1 != end())
+        if (get_numShapes() > 1)
         {
-           postScriptFragment << moveToNextShape(**shape, relativeCurrentPoint);
+            postScriptFragment << moveBackToOrigin(relativeCurrentPoint);
         }
+        return postScriptFragment;
     }
-    if (get_numShapes() > 1)
-    {
-       postScriptFragment << moveBackToOrigin(relativeCurrentPoint);
-    }
-    return postScriptFragment;
-}
 
     LayeredShapes::LayeredShapes(std::vector<Shape_ptr> shapes)
             : CompoundShape(move(shapes))
