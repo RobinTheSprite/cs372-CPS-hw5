@@ -83,27 +83,12 @@ namespace cps
 
     double CompoundShape::get_height()
     {
-        return 0;
+        return std::accumulate(this->begin(), this->end(), 0.0, lambdaHeight());
     }
 
     LayeredShapes::LayeredShapes(std::vector<Shape_ptr> shapes)
             : CompoundShape(move(shapes))
     {}
-
-    double LayeredShapes::get_height()
-    {
-        return std::accumulate(this->begin(), this->end(), 0.0,
-                               [](auto a, auto &b) {
-                                   if (a < b->get_height())
-                                   {
-                                       return b->get_height();
-                                   }
-                                   else
-                                   {
-                                       return a;
-                                   }
-                               });
-    }
 
     std::string LayeredShapes::moveToNextShape(Shape &, double &)
     {
@@ -133,19 +118,18 @@ namespace cps
         };
     }
 
-    double HorizontalShapes::get_height()
+    std::function<double(double, Shape::Shape_ptr &)> LayeredShapes::lambdaHeight()
     {
-        return std::accumulate(this->begin(), this->end(), 0.0,
-                               [](auto a, auto &b) {
-                                   if (a < b->get_height())
-                                   {
-                                       return b->get_height();
-                                   }
-                                   else
-                                   {
-                                       return a;
-                                   }
-                               });
+        return [](auto a, auto &b) {
+            if (a < b->get_height())
+            {
+                return b->get_height();
+            }
+            else
+            {
+                return a;
+            }
+        };
     }
 
     std::string HorizontalShapes::moveToNextShape(Shape &shape, double &relativeCurrentPoint)
@@ -168,14 +152,23 @@ namespace cps
         return [](auto a, auto &b) { return a + b->get_width(); };
     }
 
+    std::function<double(double, Shape::Shape_ptr &)> HorizontalShapes::lambdaHeight()
+    {
+        return [](auto a, auto &b) {
+            if (a < b->get_height())
+            {
+                return b->get_height();
+            }
+            else
+            {
+                return a;
+            }
+        };
+    }
+
     VerticalShapes::VerticalShapes(vector<Shape_ptr> shapes)
             : CompoundShape(move(shapes))
     {}
-
-    double VerticalShapes::get_height()
-    {
-        return std::accumulate(this->begin(), this->end(), 0.0, [](auto a, auto &b) { return a + b->get_height(); });
-    }
 
     std::string VerticalShapes::moveToNextShape(Shape &shape, double &relativeCurrentPoint)
     {
@@ -204,6 +197,11 @@ namespace cps
                 return a;
             }
         };
+    }
+
+    std::function<double(double, Shape::Shape_ptr &)> VerticalShapes::lambdaHeight()
+    {
+        return [](auto a, auto &b) { return a + b->get_height(); };
     }
 
     Scaled::Scaled(Shape &shape, pair<double, double> scaleFactor)
