@@ -75,6 +75,16 @@ namespace cps
         return postScriptFragment;
     }
 
+    double CompoundShape::get_width()
+    {
+        return 0;
+    }
+
+    double CompoundShape::get_height()
+    {
+        return 0;
+    }
+
     LayeredShapes::LayeredShapes(std::vector<Shape_ptr> shapes)
             : CompoundShape(move(shapes))
     {}

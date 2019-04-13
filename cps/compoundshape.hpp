@@ -34,6 +34,10 @@ namespace cps
 
         virtual std::string moveBackToOrigin(double &) = 0;
 
+        double get_width();
+
+        double get_height();
+
         void pushShape(Shape_ptr shape);
 
         size_t get_numShapes() const;
