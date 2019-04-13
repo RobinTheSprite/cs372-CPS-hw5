@@ -2,6 +2,7 @@
 // Created by Mark, Bryant and Jacob on 3/20/2019.
 //
 
+#include <numeric>
 #include "compoundshape.hpp"
 
 namespace cps
@@ -77,7 +78,7 @@ namespace cps
 
     double CompoundShape::get_width()
     {
-        return 0;
+        return std::accumulate(this->begin(), this->end(), 0.0, lambdaWidth());
     }
 
     double CompoundShape::get_height()
@@ -89,30 +90,19 @@ namespace cps
             : CompoundShape(move(shapes))
     {}
 
-    double LayeredShapes::get_height() const
+    double LayeredShapes::get_height()
     {
-        auto maxHeight{0.0};
-        for (const auto &shape : *this)
-        {
-            if (shape->get_height() > maxHeight)
-            {
-                maxHeight = shape->get_height();
-            }
-        }
-        return maxHeight;
-    }
-
-    double LayeredShapes::get_width() const
-    {
-        auto maxWidth{0.0};
-        for (const auto &shape : *this)
-        {
-            if (shape->get_width() > maxWidth)
-            {
-                maxWidth = shape->get_width();
-            }
-        }
-        return maxWidth;
+        return std::accumulate(this->begin(), this->end(), 0.0,
+                               [](auto a, auto &b) {
+                                   if (a < b->get_height())
+                                   {
+                                       return b->get_height();
+                                   }
+                                   else
+                                   {
+                                       return a;
+                                   }
+                               });
     }
 
     std::string LayeredShapes::moveToNextShape(Shape &, double &)
@@ -129,29 +119,34 @@ namespace cps
             : CompoundShape(move(shapes))
     {}
 
-    double HorizontalShapes::get_height() const
+    std::function<double (double, CompoundShape::Shape_ptr&)> LayeredShapes::lambdaWidth()
     {
-        auto maxHeight{0.0};
-        for (const auto &shape : *this)
-        {
-            if (shape->get_height() > maxHeight)
+        return [](double a, Shape_ptr &b) {
+            if (a < b->get_width())
             {
-                maxHeight = shape->get_height();
+                return b->get_width();
             }
-        }
-        return maxHeight;
+            else
+            {
+                return a;
+            }
+        };
     }
 
-    double HorizontalShapes::get_width() const
+    double HorizontalShapes::get_height()
     {
-        auto totalWidth{0.0};
-        for (const auto &shape : *this)
-        {
-            totalWidth += shape->get_width();
-        }
-        return totalWidth;
+        return std::accumulate(this->begin(), this->end(), 0.0,
+                               [](auto a, auto &b) {
+                                   if (a < b->get_height())
+                                   {
+                                       return b->get_height();
+                                   }
+                                   else
+                                   {
+                                       return a;
+                                   }
+                               });
     }
-
 
     std::string HorizontalShapes::moveToNextShape(Shape &shape, double &relativeCurrentPoint)
     {
@@ -168,31 +163,18 @@ namespace cps
         return postScriptFragment.str();
     }
 
+    std::function<double(double, Shape::Shape_ptr &)> HorizontalShapes::lambdaWidth()
+    {
+        return [](auto a, auto &b) { return a + b->get_width(); };
+    }
+
     VerticalShapes::VerticalShapes(vector<Shape_ptr> shapes)
             : CompoundShape(move(shapes))
     {}
 
-    double VerticalShapes::get_height() const
+    double VerticalShapes::get_height()
     {
-        auto totalHeight{0.0};
-        for (const auto &shape : *this)
-        {
-            totalHeight += shape->get_width();
-        }
-        return totalHeight;
-    }
-
-    double VerticalShapes::get_width() const
-    {
-        auto maxWidth{0.0};
-        for (const auto &shape : *this)
-        {
-            if (shape->get_width() > maxWidth)
-            {
-                maxWidth = shape->get_width();
-            }
-        }
-        return maxWidth;
+        return std::accumulate(this->begin(), this->end(), 0.0, [](auto a, auto &b) { return a + b->get_height(); });
     }
 
     std::string VerticalShapes::moveToNextShape(Shape &shape, double &relativeCurrentPoint)
@@ -210,16 +192,30 @@ namespace cps
         return postScriptFragment.str();
     }
 
+    std::function<double(double, Shape::Shape_ptr &)> VerticalShapes::lambdaWidth()
+    {
+        return [](auto a, auto &b) {
+            if (a < b->get_width())
+            {
+                return b->get_width();
+            }
+            else
+            {
+                return a;
+            }
+        };
+    }
+
     Scaled::Scaled(Shape &shape, pair<double, double> scaleFactor)
             : _originalShape(&shape), _scaleFactor(move(scaleFactor))
     {}
 
-    double Scaled::get_width() const
+    double Scaled::get_width()
     {
         return _originalShape->get_width();
     }
 
-    double Scaled::get_height() const
+    double Scaled::get_height()
     {
         return _originalShape->get_height();
     }

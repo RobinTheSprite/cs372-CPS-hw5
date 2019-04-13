@@ -8,6 +8,7 @@
 
 #include <vector>
 #include <utility> // pair
+#include <functional>
 
 #include "shape.hpp"
 
@@ -34,9 +35,11 @@ namespace cps
 
         virtual std::string moveBackToOrigin(double &) = 0;
 
-        double get_width();
+        double get_width() override;
 
-        double get_height();
+        double get_height() override;
+
+        virtual std::function<double (double, Shape_ptr&)> lambdaWidth() = 0;
 
         void pushShape(Shape_ptr shape);
 
@@ -59,9 +62,9 @@ namespace cps
     public:
         explicit LayeredShapes(std::vector<Shape_ptr> shapes = {});
 
-        double get_height() const override;
+        double get_height() override;
 
-        double get_width() const override;
+        std::function<double (double, Shape_ptr&)> lambdaWidth() override;
 
         std::string moveToNextShape(Shape &, double &) override;
 
@@ -75,9 +78,9 @@ namespace cps
     public:
         explicit HorizontalShapes(std::vector<Shape_ptr> shapes = {});
 
-        double get_height() const override;
+        double get_height() override;
 
-        double get_width() const override;
+        std::function<double (double, Shape_ptr&)> lambdaWidth() override;
 
         std::string moveToNextShape(Shape &, double &) override;
 
@@ -92,9 +95,9 @@ namespace cps
     public:
         explicit VerticalShapes(std::vector<Shape_ptr> shapes = {});
 
-        double get_height() const override;
+        double get_height() override;
 
-        double get_width() const override;
+        std::function<double (double, Shape_ptr&)> lambdaWidth() override;
 
         std::string moveToNextShape(Shape &, double &) override;
 
@@ -109,9 +112,9 @@ namespace cps
     public:
         Scaled(Shape &shape, std::pair<double, double> scaleFactor);
 
-        double get_width() const override;
+        double get_width() override;
 
-        double get_height() const override;
+        double get_height() override;
 
         void set_width(double) override
         {}

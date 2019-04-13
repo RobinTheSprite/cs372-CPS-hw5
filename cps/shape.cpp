@@ -17,12 +17,12 @@ namespace cps
 {
 
     // Base Class
-    double Shape::get_height() const
+    double Shape::get_height()
     {
         return _height;
     }
 
-    double Shape::get_width() const
+    double Shape::get_width()
     {
         return _width;
     }
@@ -42,12 +42,12 @@ namespace cps
             : _radius{radius}
     {}
 
-    double Circle::get_height() const
+    double Circle::get_height()
     {
         return _radius * 2;
     }
 
-    double Circle::get_width() const
+    double Circle::get_width()
     {
         return _radius * 2;
     }

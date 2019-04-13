@@ -21,9 +21,9 @@ namespace cps
 
         virtual ~Shape() = default;
 
-        virtual double get_height() const;
+        virtual double get_height();
 
-        virtual double get_width() const;
+        virtual double get_width();
 
         virtual void set_height(double height);
 
@@ -44,9 +44,9 @@ namespace cps
 
         explicit Circle(double);
 
-        double get_height() const override;
+        double get_height() override;
 
-        double get_width() const override;
+        double get_width() override;
 
         void set_height(double height) override;
 
